@@ -41,7 +41,7 @@ img{max-width:100%;display:block}
   display:inline-block;font-size:13px;font-weight:700;letter-spacing:2.5px;
   text-transform:uppercase;color:var(--red);margin-bottom:14px;
 }
-.section{padding:110px 0}
+.section{padding:110px 0;position:relative;z-index:1}
 .section h2{font-size:clamp(34px,5vw,58px);font-weight:800;text-transform:uppercase}
 .lead{font-size:18px;color:var(--grey);max-width:680px;margin-top:18px}
 
@@ -79,20 +79,15 @@ header:not(.scrolled) .lang button{color:#fff}
 header:not(.scrolled) .burger span{background:#fff}
 
 /* ---------- HERO (scroll-driven video) ---------- */
-.hero{position:relative;height:220vh;background:var(--black)}
-.hero-stage{
-  position:sticky;top:0;height:100vh;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-}
-.hero-media{position:absolute;inset:0;z-index:0;background:#0a0a0a}
+/* canvas + media are fixed — always in background */
+.hero{position:relative;height:100vh;background:transparent}
+.hero-media{position:fixed;inset:0;z-index:0;background:#0a0a0a}
 .hero-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 #heroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
 .hero-media::after{content:"";position:absolute;inset:0;background:
-  linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,.1) 35%,rgba(10,10,10,.55) 100%);z-index:2}
-/* smooth fade-out at bottom — blends hero into next section */
-.hero-fade{position:absolute;bottom:0;left:0;right:0;height:35vh;
-  background:linear-gradient(to bottom,transparent,var(--black));z-index:4;pointer-events:none}
-.hero-content{position:relative;z-index:5;text-align:center;color:#fff;padding:0 24px;max-width:1000px;will-change:transform,opacity}
+  linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,.1) 35%,rgba(10,10,10,.6) 100%);z-index:2}
+/* hero content is fixed — fades as you scroll */
+.hero-content{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;text-align:center;color:#fff;padding:0 24px;max-width:1000px;will-change:opacity}
 .hero-content .eyebrow{color:#fff;opacity:.85}
 .hero-content h1{
   font-size:clamp(44px,8vw,108px);font-weight:800;text-transform:uppercase;
@@ -101,6 +96,8 @@ header:not(.scrolled) .burger span{background:#fff}
 .hero-content h1 .accent{color:var(--red)}
 .hero-content p{font-size:clamp(16px,2vw,21px);margin:22px auto 0;max-width:620px;opacity:.92}
 .hero-cta{margin-top:38px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+/* invisible spacer — gives scroll space for animation phase 1 */
+.hero-trigger{height:120vh;position:relative;z-index:1;pointer-events:none}
 .btn{
   display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:.5px;
   padding:15px 30px;border-radius:40px;cursor:pointer;border:2px solid transparent;transition:.25s;
@@ -111,7 +108,7 @@ header:not(.scrolled) .burger span{background:#fff}
 .btn-ghost:hover{background:#fff;color:var(--black);border-color:#fff}
 
 /* ---------- STATS ---------- */
-.stats{background:var(--black);color:#fff;padding:64px 0}
+.stats{background:var(--black);color:#fff;padding:64px 0;position:relative;z-index:1}
 .stats .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
 .stat .num{font-family:'Saira Condensed';font-size:clamp(40px,5vw,62px);font-weight:800;color:#fff;line-height:1}
 .stat .num span{color:var(--red)}
@@ -234,7 +231,7 @@ header:not(.scrolled) .burger span{background:#fff}
 .map-link:hover{color:var(--red)}
 
 /* ---------- FOOTER ---------- */
-footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top:1px solid rgba(255,255,255,.08)}
+footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
 .foot img{height:42px;background:#fff;border-radius:8px;padding:5px 8px}
 .foot-links{display:flex;gap:26px;flex-wrap:wrap}
@@ -301,29 +298,23 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 
 <!-- ================= HERO (scroll-driven) ================= -->
 <section class="hero" id="hero">
-  <div class="hero-stage">
-    <div class="hero-media" id="heroMedia">
-      <!-- Poster: prva sličica je vedno vidna takoj (fallback, da hero ni nikoli črn) -->
-      <img class="hero-poster" src="assets/frames/frame-001.webp" alt="Starin Transport tovornjak na avtocesti" fetchpriority="high" />
-      <!-- Scroll-driven frame sequence (300 frames) – clean scrub on scroll -->
-      <canvas id="heroCanvas"></canvas>
+  <div class="hero-media" id="heroMedia">
+    <img class="hero-poster" src="assets/frames/frame-001.webp" alt="Starin Transport tovornjak na avtocesti" fetchpriority="high" />
+    <canvas id="heroCanvas"></canvas>
+  </div>
+  <div class="hero-content" id="heroContent">
+    <span class="eyebrow" data-sl="Od leta 1985" data-en="Since 1985">Od leta 1985</span>
+    <h1 data-sl="Zanesljiv partner<br>v <span class='accent'>transportu</span> in logistiki" data-en="Reliable partner in<br><span class='accent'>transport</span> &amp; logistics">Zanesljiv partner<br>v <span class="accent">transportu</span> in logistiki</h1>
+    <p data-sl="Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku." data-en="Top-quality transport services since 1985. A modern fleet, tracking technology and reliability every step of the way.">Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn btn-primary" data-sl="Povpraševanje" data-en="Get a quote">Povpraševanje</a>
+      <a href="#services" class="btn btn-ghost" data-sl="Naše storitve" data-en="Our services">Naše storitve</a>
     </div>
-
-    <div class="hero-content" id="heroContent">
-      <span class="eyebrow" data-sl="Od leta 1985" data-en="Since 1985">Od leta 1985</span>
-      <h1 data-sl="Zanesljiv partner<br>v <span class='accent'>transportu</span> in logistiki" data-en="Reliable partner in<br><span class='accent'>transport</span> &amp; logistics">Zanesljiv partner<br>v <span class="accent">transportu</span> in logistiki</h1>
-      <p data-sl="Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku." data-en="Top-quality transport services since 1985. A modern fleet, tracking technology and reliability every step of the way.">Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku.</p>
-      <div class="hero-cta">
-        <a href="#contact" class="btn btn-primary" data-sl="Povpraševanje" data-en="Get a quote">Povpraševanje</a>
-        <a href="#services" class="btn btn-ghost" data-sl="Naše storitve" data-en="Our services">Naše storitve</a>
-      </div>
-    </div>
-
-    <!-- gradient fade into the next section -->
-    <div class="hero-fade"></div>
-
   </div>
 </section>
+
+<!-- scroll spacer: animation plays through this zone while page scrolls normally -->
+<div class="hero-trigger" aria-hidden="true"></div>
 
 <!-- ================= STATS ================= -->
 <section class="stats">
@@ -674,26 +665,27 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 /* ---------- SCROLL-DRIVEN HERO — 300-frame sequence on canvas ---------- */
 (function(){
   const FRAME_COUNT=300;
-  const hero=document.getElementById('hero');
   const content=document.getElementById('heroContent');
   const canvas=document.getElementById('heroCanvas');
-  const ctx=canvas.getContext('2d',{alpha:true});
+  const ctx=canvas.getContext('2d',{alpha:false});
+
+  // total scroll distance over which the full animation plays (100vh hero + 120vh trigger = 220vh)
+  let ANIM_SCROLL=window.innerHeight*2.2;
 
   const pad=n=>('00'+n).slice(-3);
   const frames=new Array(FRAME_COUNT);
   const loaded=new Array(FRAME_COUNT).fill(false);
-  let cssW=0,cssH=0,dpr=1,currentIdx=-1,latestP=0;
+  let dpr=1,currentIdx=-1,latestP=0;
 
   function resize(){
+    ANIM_SCROLL=window.innerHeight*2.2;
     dpr=Math.min(window.devicePixelRatio||1,2);
-    cssW=canvas.clientWidth; cssH=canvas.clientHeight;
-    if(cssW===0||cssH===0) return; // not laid out yet — try again later
-    const w=Math.round(cssW*dpr), h=Math.round(cssH*dpr);
+    const w=Math.round(canvas.clientWidth*dpr), h=Math.round(canvas.clientHeight*dpr);
+    if(w===0||h===0) return;
     if(w!==canvas.width||h!==canvas.height){ canvas.width=w; canvas.height=h; currentIdx=-1; }
     draw(indexForProgress(latestP));
   }
 
-  // draw image with object-fit:cover math
   function paint(img){
     if(!img||!img.naturalWidth) return;
     const cw=canvas.width, ch=canvas.height;
@@ -703,7 +695,6 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
     else{ dw=cw; dh=cw/ir; dx=0; dy=(ch-dh)/2; }
     ctx.drawImage(img,dx,dy,dw,dh);
   }
-  // pick nearest already-loaded frame to avoid blanks while loading
   function nearestLoaded(idx){
     if(loaded[idx]) return idx;
     for(let d=1;d<FRAME_COUNT;d++){
@@ -723,7 +714,6 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
     return Math.max(0,Math.min(FRAME_COUNT-1,Math.round(p*(FRAME_COUNT-1))));
   }
 
-  // preload frames in scroll order
   function load(i){
     const img=new Image();
     img.decoding='async';
@@ -734,31 +724,31 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   for(let i=0;i<FRAME_COUNT;i++) load(i);
 
   function render(){
-    const p=latestP;
-    // content stays fully visible until 70%, then fades out over last 30%
-    const fadeStart=0.70;
-    const opacity=p<fadeStart?1:(1-(p-fadeStart)/(1-fadeStart));
-    content.style.transform='translateY('+(p*-50)+'px)';
-    content.style.opacity=Math.max(0,opacity).toFixed(3);
-    draw(indexForProgress(p));
+    const sy=window.scrollY;
+    // animation progress tied directly to scrollY — linear, no speed change
+    latestP=Math.min(1,Math.max(0,sy/ANIM_SCROLL));
+
+    // hero content: fully visible until 50vh, fades out between 50–90vh
+    const vh=window.innerHeight;
+    const fadeZone=vh*0.4;
+    const fadeStart=vh*0.5;
+    const rawFade=(fadeStart+fadeZone-sy)/fadeZone;
+    const opacity=Math.min(1,Math.max(0,rawFade));
+    content.style.opacity=opacity.toFixed(3);
+    // subtle upward drift only while visible
+    content.style.transform='translateY('+(sy*-0.18)+'px)';
+
+    draw(indexForProgress(latestP));
   }
-  function onScroll(){
-    const rect=hero.getBoundingClientRect();
-    const total=hero.offsetHeight-window.innerHeight;
-    latestP=Math.min(1,Math.max(0,(-rect.top)/total));
-    render(); // draw immediately — drawImage is cheap and guarded by frame index
-  }
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',resize);
-  // Redraw the moment the canvas actually gets real dimensions
+
+  window.addEventListener('scroll',render,{passive:true});
+  window.addEventListener('resize',()=>{ resize(); render(); });
   if(window.ResizeObserver){ new ResizeObserver(resize).observe(canvas); }
-  // Keep retrying until the first frame is genuinely on screen
-  // (covers 0-size at init, slow/late webp loads, late layout)
   (function ensureFirstPaint(){
     resize();
     if(currentIdx<0) requestAnimationFrame(ensureFirstPaint);
   })();
-  onScroll();
+  render();
 })();
 
 /* ---------- REVEAL ON SCROLL ---------- */
