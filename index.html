@@ -79,11 +79,11 @@ header:not(.scrolled) .lang button{color:#fff}
 header:not(.scrolled) .burger span{background:#fff}
 
 /* ---------- HERO (scroll-driven video) ---------- */
-/* The hero section is a tall scroll spacer. The media + content are FIXED so the
-   animation stays put while you scroll. Phase 1 (frames 1→240): page feels pinned,
-   only the animation plays. Phase 2 (frames 240→300): the next section rises while
-   the animation finishes in the fixed background. JS hides the media once scrolled past. */
-.hero{position:relative;height:240vh;background:var(--black)}
+/* The hero section is a scroll spacer. The media + content are FIXED so the animation
+   stays put while you scroll. Short pinned phase (~40vh) then the next section starts
+   rising while the animation keeps finishing in the fixed background. JS hides the media
+   once scrolled past so it never bleeds through the rest of the page. */
+.hero{position:relative;height:140vh;background:var(--black)}
 .hero-media{position:fixed;inset:0;z-index:0;background:#0a0a0a;pointer-events:none;will-change:opacity}
 .hero-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 #heroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
@@ -726,17 +726,18 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   function render(){
     const vh=window.innerHeight;
     const sy=window.scrollY;
-    // full animation spans 1.75 viewports of scroll → frame 240 (p=0.8) at 1.4vh,
-    // which is exactly where the next section begins to rise (hero is 240vh tall).
-    const ANIM_SCROLL=vh*1.75;
+    // full animation spans 1.2 viewports of scroll. The page starts moving down at
+    // ~40vh (hero is 140vh tall) — short pin, scroll engages quickly, animation
+    // keeps running 1→300 as the next section rises.
+    const ANIM_SCROLL=vh*1.2;
     const p=clamp01(sy/ANIM_SCROLL);
     latestP=p;
 
     // frames 1→300 at a constant rate — no speedup, linear with scroll
     draw(indexForProgress(p));
 
-    // hero text: visible at the start, fades out well before the unlock (p 0.1→0.5)
-    const textOp=clamp01((0.5-p)/0.4);
+    // hero text: visible at the start, fades out before the page starts moving (p 0.05→0.33)
+    const textOp=clamp01((0.33-p)/0.28);
     content.style.opacity=textOp.toFixed(3);
     content.style.transform='translate(-50%,-50%) translateY('+(p*-50)+'px)';
     content.style.pointerEvents=textOp>0.05?'auto':'none';
