@@ -168,6 +168,9 @@ header:not(.scrolled) .burger span{background:#fff}
 .fcard-num{position:absolute;top:14px;left:14px;font-family:'Saira Condensed';font-weight:800;font-size:13px;letter-spacing:1px;background:var(--red);color:#fff;padding:5px 13px;border-radius:30px}
 .fcard-body{padding:22px}
 .fcard-body h3{font-family:'Saira Condensed';font-size:23px;font-weight:700;color:var(--black);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;min-height:52px;line-height:1.05}
+.fdim{background:var(--bg-soft);border-radius:11px;padding:10px 14px;margin-bottom:12px}
+.fdim b{display:block;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:3px;font-weight:600}
+.fdim span{display:flex;align-items:center;min-height:38px;font-family:'Saira Condensed';font-size:16px;font-weight:700;color:var(--black);line-height:1.15}
 .fspecs{display:flex;gap:12px}
 .fspec{flex:1;background:var(--bg-soft);border-radius:11px;padding:11px 14px;text-align:center}
 .fspec b{display:block;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--grey);margin-bottom:4px;font-weight:600}
@@ -194,13 +197,36 @@ header:not(.scrolled) .burger span{background:#fff}
 .cinfo-line .ct{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey-light)}
 .cinfo-line .cv{font-size:16px;font-weight:600}
 .cinfo-line a:hover{color:var(--red)}
-.team{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .tperson{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:20px;transition:.25s}
 .tperson:hover{border-color:var(--red);background:rgba(200,16,46,.08)}
 .tperson .tn{font-family:'Saira Condensed';font-size:20px;font-weight:700}
 .tperson .tr{color:var(--red);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin:2px 0 12px}
 .tperson .tc{font-size:13.5px;color:var(--grey-light);display:flex;flex-direction:column;gap:4px}
 .tperson .tc a:hover{color:#fff}
+
+/* contact form */
+.cform{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:34px}
+.cform h3{color:var(--red);font-size:15px;letter-spacing:2px;text-transform:uppercase;margin-bottom:22px}
+.cform .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey-light);margin-bottom:8px}
+.field input,.field textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:13px 15px;color:#fff;font-family:inherit;font-size:15px;transition:border-color .2s,background .2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--red);background:rgba(255,255,255,.09)}
+.field textarea{resize:vertical;min-height:118px}
+.cform button{width:100%;justify-content:center;margin-top:4px}
+.form-note{font-size:12.5px;color:var(--grey-light);margin-top:14px;text-align:center}
+.form-note.ok{color:#46c46a}
+
+/* team + map blocks */
+.team-block{margin-top:48px}
+.map-block{margin-top:48px}
+.block-h3{color:var(--red);font-size:15px;letter-spacing:2px;text-transform:uppercase;margin-bottom:22px}
+.map-wrap{border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.map-wrap iframe{width:100%;height:430px;border:0;display:block}
+.map-link{display:inline-flex;align-items:center;gap:9px;margin-top:18px;font-weight:700;font-size:14px;letter-spacing:.4px;color:#fff}
+.map-link svg{width:18px;height:18px;color:var(--red)}
+.map-link:hover{color:var(--red)}
 
 /* ---------- FOOTER ---------- */
 footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top:1px solid rgba(255,255,255,.08)}
@@ -230,12 +256,14 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   .ind-grid{grid-template-columns:repeat(3,1fr)}
   .stats .grid{grid-template-columns:repeat(2,1fr);gap:34px}
   .contact-grid{grid-template-columns:1fr;gap:34px}
+  .team{grid-template-columns:repeat(2,1fr)}
   .fleet-grid{grid-template-columns:repeat(2,1fr)}
   .section{padding:80px 0}
 }
 @media(max-width:560px){
   .ind-grid{grid-template-columns:repeat(2,1fr)}
   .team{grid-template-columns:1fr}
+  .cform .frow{grid-template-columns:1fr}
   .fleet-grid{grid-template-columns:1fr}
   .hero{height:240vh}
 }
@@ -380,6 +408,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <div class="fcard-img"><span class="fcard-num">01</span><img src="assets/img/fleet-kombi.webp" alt="Kombi s cerado" loading="lazy" /></div>
         <div class="fcard-body">
           <h3 data-sl="Kombi s cerado" data-en="Curtain-Sided Van">Kombi s cerado</h3>
+          <div class="fdim"><b data-sl="Mere (D×Š×V)" data-en="Dimensions (L×W×H)">Mere (D×Š×V)</b><span>5 × 2,10 × 2,30 m</span></div>
           <div class="fspecs">
             <div class="fspec"><b data-sl="Nosilnost" data-en="Capacity">Nosilnost</b><span>1.000 kg</span></div>
             <div class="fspec"><b data-sl="Euro palete" data-en="Euro-pallets">Euro palete</b><span data-sl="do 10" data-en="up to 10">do 10</span></div>
@@ -390,6 +419,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <div class="fcard-img"><span class="fcard-num">02</span><img src="assets/img/fleet-solo.webp" alt="Solo tovornjak" loading="lazy" /></div>
         <div class="fcard-body">
           <h3 data-sl="Solo tovornjak" data-en="Solo Truck">Solo tovornjak</h3>
+          <div class="fdim"><b data-sl="Mere (D×Š×V)" data-en="Dimensions (L×W×H)">Mere (D×Š×V)</b><span>7,2–8 × 2,40–2,45 × 2,50–3,00 m</span></div>
           <div class="fspecs">
             <div class="fspec"><b data-sl="Nosilnost" data-en="Capacity">Nosilnost</b><span>3.5 – 12 t</span></div>
             <div class="fspec"><b data-sl="Euro palete" data-en="Euro-pallets">Euro palete</b><span data-sl="do 18" data-en="up to 18">do 18</span></div>
@@ -400,6 +430,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <div class="fcard-img"><span class="fcard-num">03</span><img src="assets/img/fleet-tandem.webp" alt="Tandem tovornjak" loading="lazy" /></div>
         <div class="fcard-body">
           <h3 data-sl="Tandem tovornjak" data-en="Tandem Truck">Tandem tovornjak</h3>
+          <div class="fdim"><b data-sl="Mere (D×Š×V)" data-en="Dimensions (L×W×H)">Mere (D×Š×V)</b><span>15,4 × 2,45 × 2,7 m</span></div>
           <div class="fspecs">
             <div class="fspec"><b data-sl="Nosilnost" data-en="Capacity">Nosilnost</b><span>12 – 24 t</span></div>
             <div class="fspec"><b data-sl="Euro palete" data-en="Euro-pallets">Euro palete</b><span data-sl="do 38" data-en="up to 38">do 38</span></div>
@@ -410,6 +441,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <div class="fcard-img"><span class="fcard-num">04</span><img src="assets/img/fleet-jumbo.webp" alt="Jumbo tovornjak" loading="lazy" /></div>
         <div class="fcard-body">
           <h3 data-sl="Jumbo tovornjak" data-en="Jumbo Truck">Jumbo tovornjak</h3>
+          <div class="fdim"><b data-sl="Mere (D×Š×V)" data-en="Dimensions (L×W×H)">Mere (D×Š×V)</b><span>15,4 × 2,45 × 3 m</span></div>
           <div class="fspecs">
             <div class="fspec"><b data-sl="Nosilnost" data-en="Capacity">Nosilnost</b><span>24 t</span></div>
             <div class="fspec"><b data-sl="Euro palete" data-en="Euro-pallets">Euro palete</b><span data-sl="do 38" data-en="up to 38">do 38</span></div>
@@ -420,6 +452,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <div class="fcard-img"><span class="fcard-num">05</span><img src="assets/img/fleet-semi.webp" alt="Polpriklopnik in Mega tovornjak" loading="lazy" /></div>
         <div class="fcard-body">
           <h3 data-sl="Polpriklopnik in Mega tovornjak" data-en="Semi-Truck &amp; Mega Truck">Polpriklopnik in Mega tovornjak</h3>
+          <div class="fdim"><b data-sl="Mere (D×Š×V)" data-en="Dimensions (L×W×H)">Mere (D×Š×V)</b><span>13,6 × 2,45 × 2,7–3 m</span></div>
           <div class="fspecs">
             <div class="fspec"><b data-sl="Nosilnost" data-en="Capacity">Nosilnost</b><span>24 – 25 t</span></div>
             <div class="fspec"><b data-sl="Euro palete" data-en="Euro-pallets">Euro palete</b><span data-sl="do 33–34" data-en="up to 33–34">do 33–34</span></div>
@@ -489,9 +522,40 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         </div>
       </div>
 
-      <div class="reveal">
-        <h3 style="color:var(--red);font-size:15px;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px" data-sl="Naša ekipa" data-en="Our team">Naša ekipa</h3>
-        <div class="team">
+      <form class="cform reveal" id="contactForm" novalidate>
+        <h3 data-sl="Pošljite povpraševanje" data-en="Send an inquiry">Pošljite povpraševanje</h3>
+        <div class="frow">
+          <div class="field">
+            <label for="cf-name" data-sl="Ime in priimek" data-en="Full name">Ime in priimek</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="cf-email" data-sl="E-pošta" data-en="Email">E-pošta</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="field">
+            <label for="cf-phone" data-sl="Telefon" data-en="Phone">Telefon</label>
+            <input id="cf-phone" name="phone" type="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="cf-subject" data-sl="Zadeva" data-en="Subject">Zadeva</label>
+            <input id="cf-subject" name="subject" type="text" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="cf-msg" data-sl="Sporočilo" data-en="Message">Sporočilo</label>
+          <textarea id="cf-msg" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" data-sl="Pošlji sporočilo" data-en="Send message">Pošlji sporočilo</button>
+        <div class="form-note" id="formNote" data-sl="Odpre se vaš e-poštni program z že izpolnjenim sporočilom." data-en="Your email app opens with the message ready to send.">Odpre se vaš e-poštni program z že izpolnjenim sporočilom.</div>
+      </form>
+    </div>
+
+    <div class="team-block reveal">
+      <h3 class="block-h3" data-sl="Naša ekipa" data-en="Our team">Naša ekipa</h3>
+      <div class="team">
           <div class="tperson">
             <div class="tn">Simon Starin</div>
             <div class="tr" data-sl="Direktor" data-en="Director">Direktor</div>
@@ -524,6 +588,16 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
           </div>
         </div>
       </div>
+
+    <div class="map-block reveal">
+      <h3 class="block-h3" data-sl="Kje nas najdete" data-en="Where to find us">Kje nas najdete</h3>
+      <div class="map-wrap">
+        <iframe src="https://maps.google.com/maps?q=46.1228416,14.6048605&amp;hl=sl&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Transport Starin d.o.o. — lokacija"></iframe>
+      </div>
+      <a class="map-link" href="https://www.google.com/maps/place/Transport+Starin+d.o.o./@46.1228416,14.6022856,609m/data=!3m2!1e3!4b1!4m6!3m5!1s0x476535c6af951c47:0x4c69b3b09b15e57a!8m2!3d46.1228416!4d14.6048605!16s%2Fg%2F11q4hxt7pb?entry=ttu" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span data-sl="Odpri v Google Zemljevidih" data-en="Open in Google Maps">Odpri v Google Zemljevidih</span>
+      </a>
     </div>
   </div>
 </section>
@@ -674,6 +748,27 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   document.querySelectorAll('.reveal').forEach((el,i)=>{
     el.style.transitionDelay=(i%4*0.06)+'s';
     io.observe(el);
+  });
+})();
+
+/* ---------- CONTACT FORM (mailto) ---------- */
+(function(){
+  const form=document.getElementById('contactForm');
+  if(!form) return;
+  const note=document.getElementById('formNote');
+  const TO='info@starin-transport.si';
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    const lang=document.documentElement.lang==='en'?'en':'sl';
+    const val=id=>(document.getElementById(id).value||'').trim();
+    const name=val('cf-name'), email=val('cf-email'), phone=val('cf-phone'), subject=val('cf-subject'), msg=val('cf-msg');
+    const subj=subject||(lang==='en'?('Inquiry — '+name):('Povpraševanje — '+name));
+    const L=lang==='en'?{name:'Name',email:'Email',phone:'Phone',msg:'Message'}:{name:'Ime',email:'E-pošta',phone:'Telefon',msg:'Sporočilo'};
+    const body=[L.name+': '+name,L.email+': '+email,L.phone+': '+phone,'',L.msg+':',msg].join('\n');
+    window.location.href='mailto:'+TO+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);
+    note.textContent=lang==='en'?'Opening your email app…':'Odpiramo vaš e-poštni program…';
+    note.classList.add('ok');
   });
 })();
 
