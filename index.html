@@ -79,17 +79,21 @@ header:not(.scrolled) .lang button{color:#fff}
 header:not(.scrolled) .burger span{background:#fff}
 
 /* ---------- HERO (scroll-driven video) ---------- */
-/* The hero section is a tall scroll spacer. The media + content are FIXED so the
-   animation stays put while you scroll. Phase 1 (frames 1→240): page feels pinned,
-   only the animation plays. Phase 2 (frames 240→300): the next section rises while
-   the animation finishes in the fixed background. JS hides the media once scrolled past. */
-.hero{position:relative;height:240vh;background:var(--black)}
-.hero-media{position:fixed;inset:0;z-index:0;background:#0a0a0a;pointer-events:none;will-change:opacity}
+/* animation is contained in the hero — sticky pin scrubs frames as you scroll */
+.hero{position:relative;height:200vh;background:var(--black)}
+.hero-stage{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-media{position:absolute;inset:0;z-index:0;background:#0a0a0a}
 .hero-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 #heroCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
 .hero-media::after{content:"";position:absolute;inset:0;background:
   linear-gradient(180deg,rgba(10,10,10,.45) 0%,rgba(10,10,10,.1) 35%,rgba(10,10,10,.6) 100%);z-index:2}
-.hero-content{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;text-align:center;color:#fff;padding:0 24px;width:100%;max-width:1000px;will-change:opacity,transform}
+/* fade-to-black overlay — JS ramps it up at the end so the awkward last frames
+   are never seen and the hero blends seamlessly into the dark next section */
+.hero-fade{position:absolute;inset:0;z-index:3;background:var(--black);opacity:0;pointer-events:none}
+.hero-content{position:relative;z-index:5;text-align:center;color:#fff;padding:0 24px;max-width:1000px;will-change:opacity,transform}
 .hero-content .eyebrow{color:#fff;opacity:.85}
 .hero-content h1{
   font-size:clamp(44px,8vw,108px);font-weight:800;text-transform:uppercase;
@@ -298,18 +302,22 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 
 <!-- ================= HERO (scroll-driven) ================= -->
 <section class="hero" id="hero">
-  <div class="hero-media" id="heroMedia">
-    <img class="hero-poster" src="assets/frames/frame-001.webp" alt="Starin Transport tovornjak na avtocesti" fetchpriority="high" />
-    <canvas id="heroCanvas"></canvas>
-  </div>
-  <div class="hero-content" id="heroContent">
-    <span class="eyebrow" data-sl="Od leta 1985" data-en="Since 1985">Od leta 1985</span>
-    <h1 data-sl="Zanesljiv partner<br>v <span class='accent'>transportu</span> in logistiki" data-en="Reliable partner in<br><span class='accent'>transport</span> &amp; logistics">Zanesljiv partner<br>v <span class="accent">transportu</span> in logistiki</h1>
-    <p data-sl="Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku." data-en="Top-quality transport services since 1985. A modern fleet, tracking technology and reliability every step of the way.">Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku.</p>
-    <div class="hero-cta">
-      <a href="#contact" class="btn btn-primary" data-sl="Povpraševanje" data-en="Get a quote">Povpraševanje</a>
-      <a href="#services" class="btn btn-ghost" data-sl="Naše storitve" data-en="Our services">Naše storitve</a>
+  <div class="hero-stage">
+    <div class="hero-media" id="heroMedia">
+      <img class="hero-poster" src="assets/frames/frame-001.webp" alt="Starin Transport tovornjak na avtocesti" fetchpriority="high" />
+      <canvas id="heroCanvas"></canvas>
     </div>
+    <div class="hero-content" id="heroContent">
+      <span class="eyebrow" data-sl="Od leta 1985" data-en="Since 1985">Od leta 1985</span>
+      <h1 data-sl="Zanesljiv partner<br>v <span class='accent'>transportu</span> in logistiki" data-en="Reliable partner in<br><span class='accent'>transport</span> &amp; logistics">Zanesljiv partner<br>v <span class="accent">transportu</span> in logistiki</h1>
+      <p data-sl="Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku." data-en="Top-quality transport services since 1985. A modern fleet, tracking technology and reliability every step of the way.">Vrhunske prevozne storitve že od leta 1985. Sodoben vozni park, tehnologija sledenja in zanesljivost na vsakem koraku.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary" data-sl="Povpraševanje" data-en="Get a quote">Povpraševanje</a>
+        <a href="#services" class="btn btn-ghost" data-sl="Naše storitve" data-en="Our services">Naše storitve</a>
+      </div>
+    </div>
+    <!-- fade-to-black at the end of the animation (JS-controlled) -->
+    <div class="hero-fade" id="heroFade"></div>
   </div>
 </section>
 
@@ -664,14 +672,11 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   const FRAME_COUNT=300;
   const hero=document.getElementById('hero');
   const content=document.getElementById('heroContent');
-  const media=document.getElementById('heroMedia');
+  const fade=document.getElementById('heroFade');
   const canvas=document.getElementById('heroCanvas');
   const ctx=canvas.getContext('2d',{alpha:false});
 
-  // Full animation (frames 1→300) plays over ANIM_SCROLL of scrolling.
-  // Frame 240 sits at p=0.8 — exactly where the hero spacer ends and the next
-  // section starts to appear, so phase 1 (1→240) feels pinned and phase 2 (240→300)
-  // finishes while the page scrolls down over the fixed canvas.
+  // the animation plays once across the hero's sticky pin zone (200vh hero → 100vh of scrub)
   const pad=n=>('00'+n).slice(-3);
   const frames=new Array(FRAME_COUNT);
   const loaded=new Array(FRAME_COUNT).fill(false);
@@ -724,27 +729,24 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 
   function clamp01(x){ return x<0?0:x>1?1:x; }
   function render(){
-    const vh=window.innerHeight;
-    const sy=window.scrollY;
-    // full animation spans 1.75 viewports of scroll → frame 240 (p=0.8) at 1.4vh,
-    // which is exactly where the next section begins to rise (hero is 240vh tall).
-    const ANIM_SCROLL=vh*1.75;
-    const p=clamp01(sy/ANIM_SCROLL);
+    // progress across the sticky pin zone — linear, constant rate (no speedup)
+    const rect=hero.getBoundingClientRect();
+    const total=hero.offsetHeight-window.innerHeight;
+    const p=total>0?clamp01(-rect.top/total):0;
     latestP=p;
 
-    // frames 1→300 at a constant rate — no speedup, linear with scroll
+    // frames 1→300 play at a constant rate over the whole pin
     draw(indexForProgress(p));
 
-    // hero text: visible at the start, fades out well before the unlock (p 0.1→0.5)
-    const textOp=clamp01((0.5-p)/0.4);
+    // hero text: fully visible at start, fades out over p 0.10–0.45
+    const textOp=clamp01((0.45-p)/0.35);
     content.style.opacity=textOp.toFixed(3);
-    content.style.transform='translate(-50%,-50%) translateY('+(p*-50)+'px)';
-    content.style.pointerEvents=textOp>0.05?'auto':'none';
+    content.style.transform='translateY('+(p*-60)+'px)';
 
-    // safeguard: once the hero spacer is fully scrolled past, hide the fixed media
-    // so the animation never bleeds through the rest of the page
-    const heroBottom=hero.getBoundingClientRect().bottom;
-    media.style.opacity=heroBottom>0?'1':'0';
+    // fade-to-black over the last stretch (p 0.78→1.0) so the awkward end frames
+    // are never seen and the hero blends seamlessly into the dark next section
+    const fadeOp=clamp01((p-0.78)/0.22);
+    fade.style.opacity=fadeOp.toFixed(3);
   }
 
   window.addEventListener('scroll',render,{passive:true});
