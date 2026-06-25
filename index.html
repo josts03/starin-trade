@@ -144,6 +144,21 @@ header:not(.scrolled) .burger span{background:#fff}
 .card h3{font-size:24px;font-weight:700;text-transform:uppercase;margin-bottom:12px}
 .card p{color:var(--grey);font-size:15.5px}
 
+/* ---------- GENERAL SERVICES (red, AI icons) ---------- */
+.gservices{background:var(--red);color:#0a0a0a;position:relative;overflow:hidden}
+.gservices::before{content:"";position:absolute;top:50%;left:-4%;transform:translateY(-50%);
+  width:760px;height:90%;background:url(assets/img/fleet-kombi.webp) left center/contain no-repeat;
+  opacity:.06;mix-blend-mode:multiply;pointer-events:none}
+.gservices .wrap{position:relative;z-index:1}
+.gservices .eyebrow{display:block;text-align:center;color:#0a0a0a;opacity:.65}
+.gservices h2{color:#0a0a0a;text-align:center}
+.gs-divider{width:64px;height:3px;background:#0a0a0a;opacity:.55;margin:20px auto 0;border-radius:3px}
+.gs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:46px 24px;max-width:880px;margin:58px auto 0}
+.gs-item{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+.gs-item img{width:86px;height:86px;object-fit:contain;transition:transform .3s ease}
+.gs-item:hover img{transform:translateY(-7px) scale(1.05)}
+.gs-item span{font-family:'Saira Condensed';font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.5px;color:#0a0a0a;line-height:1.15}
+
 /* ---------- INDUSTRIES ---------- */
 .ind-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:50px}
 .ind{
@@ -260,6 +275,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
   .about{grid-template-columns:1fr;gap:36px}
   .cards,.vcards{grid-template-columns:1fr}
   .ind-grid{grid-template-columns:repeat(3,1fr)}
+  .gs-grid{gap:40px 20px}
   .stats .grid{grid-template-columns:repeat(2,1fr);gap:34px}
   .contact-grid{grid-template-columns:1fr;gap:34px}
   .team{grid-template-columns:repeat(2,1fr)}
@@ -268,6 +284,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 }
 @media(max-width:560px){
   .ind-grid{grid-template-columns:repeat(2,1fr)}
+  .gs-grid{grid-template-columns:repeat(2,1fr);gap:36px 16px}
   .team{grid-template-columns:1fr}
   .cform .frow{grid-template-columns:1fr}
   .fleet-grid{grid-template-columns:1fr}
@@ -353,7 +370,7 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
 <section class="section services" id="services">
   <div class="wrap">
     <div class="reveal" style="max-width:680px">
-      <span class="eyebrow" data-sl="Naše storitve" data-en="Our services">Naše storitve</span>
+      <span class="eyebrow" data-sl="Storitve" data-en="Services">Storitve</span>
       <h2 data-sl="Celovite rešitve za vaše blago" data-en="Complete solutions for your goods">Celovite rešitve za vaše blago</h2>
     </div>
     <div class="cards">
@@ -372,6 +389,26 @@ footer{background:#050505;color:var(--grey-light);padding:50px 0 30px;border-top
         <h3 data-sl="Logistika" data-en="Logistics">Logistika</h3>
         <p data-sl="Nudimo celovite storitve, ki vključujejo načrtovanje, koordinacijo in izvedbo prevozov, skladiščenja ter distribucije blaga." data-en="We offer comprehensive services, including planning, coordination and execution of transportation, warehousing and distribution of goods.">Nudimo celovite storitve, ki vključujejo načrtovanje, koordinacijo in izvedbo prevozov, skladiščenja ter distribucije blaga.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GENERAL SERVICES (AI icons) ================= -->
+<section class="section gservices" id="storitve">
+  <div class="wrap">
+    <div class="reveal" style="margin:0 auto">
+      <span class="eyebrow" data-sl="Celovita ponudba" data-en="Full service range">Celovita ponudba</span>
+      <h2 data-sl="Naše storitve" data-en="Our services">Naše storitve</h2>
+      <div class="gs-divider"></div>
+    </div>
+    <div class="gs-grid">
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-prevoz.webp" alt="Prevoz" loading="lazy" /><span data-sl="Prevoz" data-en="Transport">Prevoz</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-logistika.webp" alt="Logistika" loading="lazy" /><span data-sl="Logistika" data-en="Logistics">Logistika</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-skladiscenje.webp" alt="Skladiščenje" loading="lazy" /><span data-sl="Skladiščenje" data-en="Warehousing">Skladiščenje</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-pretovarjanje.webp" alt="Pretovarjanje" loading="lazy" /><span data-sl="Pretovarjanje" data-en="Transloading">Pretovarjanje</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-docking.webp" alt="Docking" loading="lazy" /><span data-sl="Docking" data-en="Docking">Docking</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-konsolidacija.webp" alt="Konsolidirne pošiljke" loading="lazy" /><span data-sl="Konsolidirne pošiljke" data-en="Consolidated shipments">Konsolidirne pošiljke</span></div>
+      <div class="gs-item reveal"><img src="assets/img/icons/svc-adr.webp" alt="ADR prevoz nevarnih materialov" loading="lazy" /><span data-sl="ADR prevoz nevarnih materialov" data-en="ADR transport of dangerous goods">ADR prevoz nevarnih materialov</span></div>
     </div>
   </div>
 </section>
